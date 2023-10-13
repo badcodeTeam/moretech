@@ -8,7 +8,10 @@ export const FilterItem: React.FC<FilterItemProps> = ({
 	return (
 		<FilterWrapper
 			isSelected={isSelected}
-			onClick={() => onSelectItem(filter.id)}>
+			onClick={(event) => {
+				event.stopPropagation();
+				onSelectItem(filter.id);
+			}}>
 			{filter.value} {isSelected}
 		</FilterWrapper>
 	);

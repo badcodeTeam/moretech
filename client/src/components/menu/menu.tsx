@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Input } from '../input';
-import { MenuWrapper } from './menu.styles';
-import { FilterList } from '..';
+import { MenuWrapper, Toggler, TogglerWrapper } from './menu.styles';
+import { FilterList, PointList } from '..';
 
 export const Menu = (): React.ReactElement => {
 	const [value, setValue] = useState<string>('');
+	const [opened, setOpened] = useState(false);
 	const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
+	const [selectedPoint, setSelectedPoint] = useState<string>('');
 
 	const handleItemSelect = (value: string) => {
 		setSelectedItems((prev) => {
@@ -18,13 +20,19 @@ export const Menu = (): React.ReactElement => {
 	};
 
 	return (
-		<MenuWrapper>
-			<Input
-				placeholder="Поиск отделений ВТБ"
-				value={value}
-				onChange={(e) => setValue(e.target.value)}
-				onClear={() => setValue('')}
-			/>
+		<MenuWrapper opened={opened}>
+			<TogglerWrapper className="toggler">
+				<Toggler className="toggler" onClick={() => setOpened(!opened)} />
+			</TogglerWrapper>
+
+			<div>
+				<Input
+					placeholder="Поиск отделений ВТБ"
+					value={value}
+					onChange={(e) => setValue(e.target.value)}
+					onClear={() => setValue('')}
+				/>
+			</div>
 			<FilterList
 				selectedItems={selectedItems}
 				onSelectItem={handleItemSelect}
@@ -36,6 +44,24 @@ export const Menu = (): React.ReactElement => {
 					{ id: '5', value: 'text' },
 					{ id: '6', value: 'text' },
 				]}
+			/>
+			<PointList
+				selectedPoint={selectedPoint}
+				points={[
+					{
+						id: '1',
+						title: '1-я Кунцевская наб., 13к2',
+						description:
+							'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
+					},
+					{
+						id: '2',
+						title: '2-я Кунцевская наб., 13к2',
+						description:
+							'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
+					},
+				]}
+				onSelect={setSelectedPoint}
 			/>
 		</MenuWrapper>
 	);
