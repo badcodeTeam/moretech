@@ -13,17 +13,23 @@ export const MenuWrapper = styled.div<MenuWrapperProps>`
 	padding: 12px 16px;
 	background-color: white;
 
-	@media (max-width: ${breakpoints[1]}px) {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	@media (max-width: ${breakpoints[2]}px) {
 		width: 100%;
 		padding: 0;
 		${(props) => {
 			if (props.opened)
 				return css`
-					height: 90%;
+					max-height: 50%;
 				`;
 			else {
 				return css`
-					height: 5%;
+					height: 8%;
 				`;
 			}
 		}}
@@ -51,7 +57,7 @@ export const TogglerWrapper = styled.div`
 	justify-content: center;
 	padding-top: 10px;
 
-	@media (min-width: ${breakpoints[1]}px) {
+	@media (min-width: ${breakpoints[2]}px) {
 		display: none;
 	}
 `;

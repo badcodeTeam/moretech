@@ -25,44 +25,52 @@ export const Menu = (): React.ReactElement => {
 				<Toggler className="toggler" onClick={() => setOpened(!opened)} />
 			</TogglerWrapper>
 
-			<div>
-				<Input
-					placeholder="Поиск отделений ВТБ"
-					value={value}
-					onChange={(e) => setValue(e.target.value)}
-					onClear={() => setValue('')}
+			<div className="scrollable">
+				<div>
+					<Input
+						placeholder="Поиск отделений ВТБ"
+						value={value}
+						onChange={(e) => setValue(e.target.value)}
+						onClear={() => setValue('')}
+					/>
+				</div>
+				<FilterList
+					selectedItems={selectedItems}
+					onSelectItem={handleItemSelect}
+					filters={[
+						{ id: '1', value: 'text' },
+						{ id: '2', value: 'text' },
+						{ id: '3', value: 'text' },
+						{ id: '4', value: 'text' },
+						{ id: '5', value: 'text' },
+						{ id: '6', value: 'text' },
+					]}
+				/>
+				<PointList
+					selectedPoint={selectedPoint}
+					points={[
+						{
+							id: '1',
+							title: '1-я Кунцевская наб., 13к2',
+							description:
+								'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
+						},
+						{
+							id: '2',
+							title: '2-я Кунцевская наб., 13к2',
+							description:
+								'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
+						},
+						{
+							id: '3',
+							title: '2-я Кунцевская наб., 13к2',
+							description:
+								'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
+						},
+					]}
+					onSelect={setSelectedPoint}
 				/>
 			</div>
-			<FilterList
-				selectedItems={selectedItems}
-				onSelectItem={handleItemSelect}
-				filters={[
-					{ id: '1', value: 'text' },
-					{ id: '2', value: 'text' },
-					{ id: '3', value: 'text' },
-					{ id: '4', value: 'text' },
-					{ id: '5', value: 'text' },
-					{ id: '6', value: 'text' },
-				]}
-			/>
-			<PointList
-				selectedPoint={selectedPoint}
-				points={[
-					{
-						id: '1',
-						title: '1-я Кунцевская наб., 13к2',
-						description:
-							'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
-					},
-					{
-						id: '2',
-						title: '2-я Кунцевская наб., 13к2',
-						description:
-							'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
-					},
-				]}
-				onSelect={setSelectedPoint}
-			/>
 		</MenuWrapper>
 	);
 };
