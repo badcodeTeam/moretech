@@ -15,17 +15,12 @@ export const Main = () => {
 		const pointA = [latitude, longitude];
 		const pointB = [55.684758, 37.738521];
 
-		const multiRoute = new ymaps.multiRouter.MultiRoute(
-			{
-				referencePoints: [pointA, pointB],
-				params: {
-					routingMode: 'pedestrian',
-				},
+		const multiRoute = new ymaps.multiRouter.MultiRoute({
+			referencePoints: [pointA, pointB],
+			params: {
+				routingMode: 'auto',
 			},
-			{
-				boundsAutoApply: true,
-			}
-		);
+		});
 
 		if (map.current !== null) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
