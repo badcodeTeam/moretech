@@ -1,0 +1,2 @@
+# moretech
+Moretech хакатон
