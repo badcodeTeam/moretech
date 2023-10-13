@@ -1,11 +1,19 @@
+@font-face {
+	font-family: 'VTB Regular';
+	src: url('./fonts/VTBGroupUI-Regular.ttf');
+}
+
 * {
 	margin: 0;
 	padding: 0;
+	font-family: 'VTB Regular';
 }
 
 body,
+#root,
 .App {
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
+	background-color: lightgrey;
 }
