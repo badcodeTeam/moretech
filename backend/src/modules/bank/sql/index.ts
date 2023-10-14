@@ -1,4 +1,4 @@
-import { LocationSpec } from "src/interfaces";
+import { LocationSpec } from 'src/interfaces';
 
 export const getBankByLocation = (location: LocationSpec) => `
 SELECT json_agg(json_build_object(
@@ -40,7 +40,9 @@ SELECT  json_agg(json_build_object(
     'point',ST_AsGeoJSON("point")::jsonb,
     'load', workload.load
 ))
-FROM public."Bank" as bank WHERE ST_DWithin(point, 'SRID=4326;POINT(${location.longitude} ${location.latitude})', 50000) 
+FROM public."Bank" as bank, public."BankWorkload" as workload 
+WHERE ST_DWithin(point, 'SRID=4326;POINT(${location.longitude} ${location.latitude})', 50000) 
+AND "bank"."workloadId" = "workload"."id" 
 `;
 
 export const getById = (id: string) => `
@@ -102,7 +104,6 @@ WHERE
 GROUP BY "workload"."load"
 ORDER BY "workload"."load" ASC
 `;
-
 
 export const byLoadWithFilters = (location: LocationSpec, filters: string) => `
 SELECT json_agg(json_build_object(

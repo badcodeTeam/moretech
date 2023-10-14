@@ -1,8 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { BANK_WORKLOAD_TABLE_NAME } from '../../../constants';
 
 @Entity(BANK_WORKLOAD_TABLE_NAME)
@@ -16,7 +12,8 @@ export class Workload {
   workload: object;
 
   @Column({
-    type: 'int', nullable: true
+    type: 'int',
+    nullable: true,
   })
   load: number;
 }

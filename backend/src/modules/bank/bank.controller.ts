@@ -1,17 +1,31 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { BankFilterSpec, LocationSpec} from '../../interfaces';
+import { BankFilterSpec, LocationSpec } from '../../interfaces';
 import { BankService } from './bank.service';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { BankFilterDto, LocationSpecDto } from 'src/constants';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  BankFilterDto,
+  LocationSpecDto,
+  getFullBankInfoResponseDto,
+  getShortBankInfo,
+} from 'src/constants';
 
+@ApiTags(`Банковские отделения`)
 @Controller(`bank`)
 export class BankController {
   constructor(private readonly bankService: BankService) {}
 
   @ApiOperation({
-    summary: `Получить полные данные по банкам  по геолокации`,
+    summary: `Получить полные данные по банковским отделениям по геолокации`,
   })
   @ApiQuery({ type: LocationSpecDto })
+  @ApiResponse({ status: 200, type: [getFullBankInfoResponseDto] })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/location')
@@ -20,9 +34,10 @@ export class BankController {
   }
 
   @ApiOperation({
-    summary: `Получить краткие данные по банкам по геолокации`,
+    summary: `Получить краткие данные по банковским отделениям по геолокации`,
   })
   @ApiQuery({ type: LocationSpecDto })
+  @ApiResponse({ status: 200, type: [getShortBankInfo] })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/ids')
@@ -31,12 +46,13 @@ export class BankController {
   }
 
   @ApiOperation({
-    summary: `Получить полные данные банкам по id`,
+    summary: `Получить полные данные по банковским отделениям по id`,
   })
   @ApiParam({
     name: 'id',
     required: true,
   })
+  @ApiResponse({ status: 200, type: getFullBankInfoResponseDto })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/:id')
@@ -45,10 +61,11 @@ export class BankController {
   }
 
   @ApiOperation({
-    summary: `Получить полные данные по банкам по геолокации и фильтрам`,
+    summary: `Получить полные данные по банковским отделениям по геолокации и фильтрам`,
   })
   @ApiQuery({ type: LocationSpecDto })
   @ApiBody({ type: BankFilterDto })
+  @ApiResponse({ status: 201, type: [getFullBankInfoResponseDto] })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Post('/locationfilters')

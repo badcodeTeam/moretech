@@ -1,4 +1,4 @@
-import { AtmServiceActivity, AtmServiceCapability } from "../enum";
+import { AtmServiceActivity, AtmServiceCapability } from '../enum';
 
 export interface AtmServiceSpec {
   serviceCapability: AtmServiceCapability;

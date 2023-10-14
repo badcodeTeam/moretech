@@ -19,7 +19,7 @@ async function bootstrap() {
       'Cache-Control',
       'Content-Type',
       'Content-Range',
-      'Range'
+      'Range',
     ],
     methods: ['GET,POST,OPTIONS,PUT,DELETE,PATCH'],
   });
@@ -27,8 +27,8 @@ async function bootstrap() {
   //app.useGlobalPipes(new ValidationPipe());
   if (configService.get('config.nodeEnv') !== 'production') {
     const config = new DocumentBuilder()
-      .setTitle(`Базовый дипломный проект`)
-      .setDescription(`Документация API`)
+      .setTitle(`Route Finder`)
+      .setDescription(`Оптимальный путь к вашему банку`)
       .setVersion(`1.0.0`)
       .addServer(`${configService.get('config.server.api')}`)
       .addBearerAuth()
@@ -45,8 +45,6 @@ async function bootstrap() {
 
   await app.listen(configService.get('config.server.port'), () => {
     console.log(`BASE URL: ${configService.get('config.server.api')}`);
-    console.log(`PORT: ${configService.get('config.server.port')}`);
   });
-
 }
 bootstrap();
