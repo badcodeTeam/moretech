@@ -7,6 +7,7 @@ import JsonFileAtm from './atms.json';
 import JsonFileBanks from './bank.json';
 import { Bank } from '../bank/model/bank.model';
 import { Workload } from '../bank/model/workload.model';
+import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller(`migration`)
 export class MigrationController {
@@ -21,9 +22,15 @@ export class MigrationController {
     @InjectRepository(Bank)
     private bankRepository: Repository<Bank>,
     @InjectRepository(Workload)
-    private workloadRepository: Repository<Workload>
+    private workloadRepository: Repository<Workload>,
   ) {}
 
+  @ApiOperation({
+    summary: `Запуск эмуляции загруженности банков`,
+  })
+  @ApiResponse({ status: 200, description: `OK` })
+  @ApiResponse({ status: 400, description: `BAD_REQUEST` })
+  @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/job')
   async handleCronWorkload() {
     let timerId = setInterval(async () => {
@@ -52,6 +59,12 @@ export class MigrationController {
     }, 300000);
   }
 
+  @ApiOperation({
+    summary: `Запуск миграции банкоматов`,
+  })
+  @ApiResponse({ status: 200, description: `OK` })
+  @ApiResponse({ status: 400, description: `BAD_REQUEST` })
+  @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/migrationAtm')
   async migrationAtm() {
     for await (const atm of this.JsonAtms.atms) {
@@ -68,6 +81,12 @@ export class MigrationController {
     }
   }
 
+  @ApiOperation({
+    summary: `Запуск миграции банковских отделений`,
+  })
+  @ApiResponse({ status: 200, description: `OK` })
+  @ApiResponse({ status: 400, description: `BAD_REQUEST` })
+  @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/migrationBank')
   async migrationBank() {
     console.log(this.JsonBanks.length);
@@ -82,6 +101,7 @@ export class MigrationController {
           saturday: Math.floor(Math.random() * 10),
           sunday: Math.floor(Math.random() * 10),
         },
+        load: Math.floor(Math.random() * 10),
       });
       await this.bankRepository.save({
         salePointName: bank.salePointName,
