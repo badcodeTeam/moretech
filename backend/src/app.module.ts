@@ -7,6 +7,7 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AtmModule } from './modules/atm/atm.module';
 import { MigrationModule } from './modules/migrations/migrations.module';
+import { BankModule } from './modules/bank/bank.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { MigrationModule } from './modules/migrations/migrations.module';
       useFactory: getPostgresConfig,
     }),
     AtmModule,
-    MigrationModule
+    MigrationModule,
+    BankModule,
   ],
   controllers: [],
   providers: [],
