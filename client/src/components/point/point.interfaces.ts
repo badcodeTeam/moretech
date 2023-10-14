@@ -1,7 +1,6 @@
-export interface PointProps {
-	id: string;
-	title: string;
-	description: string;
+import { AtmPoint } from '../../services/atm-service/atm.interfaces';
+
+export interface PointProps extends AtmPoint {
 	isSelected: boolean;
-	onSelect: (value: string) => void;
+	onSelect: (value: AtmPoint, needsWay?: boolean) => void;
 }

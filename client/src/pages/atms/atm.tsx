@@ -1,31 +1,84 @@
 import { Clusterer, Placemark } from '@pbe/react-yandex-maps';
-import { useGetAtmsQuery } from '../../store/api/atm/atm-slice';
 import { StyledMap } from '../main/main.styles';
 import okIcon from '../../assets/ok.svg';
+import currentSelected from '../../assets/currentSelected.svg';
 import userIcon from '../../assets/userIcon.svg';
-import { useSelector } from 'react-redux';
-import { atmFiltersSelector } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { atmFiltersSelector, atmSelector, atmsSelector } from '../../store';
+import { useEffect, useRef, useState } from 'react';
+import { AtmService } from '../../services/atm-service/atm-service';
+import { updatePoints } from '../../store/current-atms';
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
+import { Map } from 'yandex-maps';
+import { updatePoint } from '../../store/current-point';
 
 export const Atms = () => {
 	const filters = useSelector(atmFiltersSelector);
+	const atms = useSelector(atmsSelector);
+	const atm = useSelector(atmSelector);
+	const [loading, setLoading] = useState(false);
+	const dispatch = useDispatch();
+	const [ymaps, setYmaps] = useState<YMapsApi | null>(null);
 
-	const { data, isLoading } = useGetAtmsQuery({
-		cords: { latitude: 0, longitude: 0 },
-		filters,
-	});
+	useEffect(() => {
+		setLoading(true);
+		AtmService.getAtms({ cords: { latitude: 0, longitude: 0 }, filters })
+			.then((res) => dispatch(updatePoints(res)))
+			.finally(() => setLoading(false));
+	}, [dispatch, filters]);
 
-	if (isLoading) return <>Загрузка</>;
+	// const getRoute = (ref: Map) => {
+	// 	if (ymaps && atm.needsWay) {
+	// 		const multiRoute = new ymaps.multiRouter.MultiRoute(
+	// 			{
+	// 				// Описание опорных точек мультимаршрута.
+	// 				referencePoints: [
+	// 					[55.802432, 37.704547],
+	// 					[atm.point.coordinates[1], atm.point.coordinates[0]],
+	// 				],
+	// 				// Параметры маршрутизации.
+	// 				params: {
+	// 					// Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+	// 					results: 2,
+	// 				},
+	// 			},
+	// 			{
+	// 				// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+	// 				boundsAutoApply: true,
+	// 				// Внешний вид линии маршрута.
+	// 				routeActiveStrokeWidth: 6,
+	// 				routeActiveStrokeColor: '#fa6600',
+	// 			}
+	// 		);
+
+	// 		// Кладем полученный маршрут в переменную
+	// 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// 		//@ts-ignore
+	// 		ref.geoObjects.add(multiRoute);
+	// 	}
+	// };
+
+	if (loading) return <>Загрузка</>;
+
 	return (
 		<>
 			<StyledMap
 				defaultState={{ center: [55.802432, 37.704547], zoom: 15 }}
-				//ref={map}
+				//instanceRef={(ref) => ref && getRoute(ref)}
 				//modules={['multiRouter.MultiRoute']}
-				//onLoad={addRoute}
+				//</>onLoad={(maps) => setYmaps(maps)}
 			>
+				<Placemark
+					geometry={[55.802432, 37.704547]}
+					options={{
+						iconLayout: 'default#image',
+						iconImageHref: userIcon,
+						iconImageSize: [42, 42],
+					}}
+				/>
 				<Clusterer options={{ groupByCoordinates: false }}>
-					{data &&
-						data?.map((item) => {
+					{atms &&
+						atms?.map((item) => {
 							return (
 								<Placemark
 									key={item.id}
@@ -35,23 +88,17 @@ export const Atms = () => {
 									]}
 									options={{
 										iconLayout: 'default#image',
-										iconImageHref: okIcon,
+										iconImageHref:
+											(atm.id === item.id && currentSelected) || okIcon,
 										iconImageSize: [42, 42],
 									}}
-									onClick={() => console.log(item.id)}
+									onClick={() =>
+										dispatch(updatePoint({ ...item, needsWay: false }))
+									}
 								/>
 							);
 						})}
 				</Clusterer>
-
-				<Placemark
-					geometry={[55.802432, 37.704547]}
-					options={{
-						iconLayout: 'default#image',
-						iconImageHref: userIcon,
-						iconImageSize: [42, 42],
-					}}
-				/>
 			</StyledMap>
 		</>
 	);

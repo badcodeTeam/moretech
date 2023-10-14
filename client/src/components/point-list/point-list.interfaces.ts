@@ -1,11 +1,7 @@
-interface Point {
-	id: string;
-	title: string;
-	description: string;
-}
+import { AtmPoint } from '../../services/atm-service/atm.interfaces';
 
 export interface PointListProps {
-	points: Array<Point>;
+	points: Array<AtmPoint>;
 	selectedPoint: string;
-	onSelect: (value: string) => void;
+	onSelect: (value: AtmPoint, needsWay?: boolean) => void;
 }

@@ -11,7 +11,9 @@ export const Main = () => {
 	return (
 		<MainWrapper>
 			<Menu />
-			<YMaps>
+			<YMaps
+			//query={{ apikey: '3400eb80-ece5-4bd2-ae42-cd72f7e968d9' }}
+			>
 				<MapContainer>
 					<Outlet />
 				</MapContainer>

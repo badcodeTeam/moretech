@@ -7,6 +7,8 @@ export const PointWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 
+	gap: 8px;
+
 	:hover {
 		cursor: pointer;
 	}

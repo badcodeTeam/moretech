@@ -8,7 +8,7 @@ import { apiSlice } from '../api';
 
 export const atmApi = apiSlice.injectEndpoints({
 	endpoints: (build) => ({
-		getAtms: build.query<Array<AtmPoint>, GetAtmProps>({
+		getAtms: build.query<Array<AtmPoint>, GetAtmProps | null>({
 			queryFn: (args: GetAtmProps) =>
 				apiSlicePromiseWrapper(() => AtmService.getAtms(args)),
 			providesTags: ['ATMS'],
