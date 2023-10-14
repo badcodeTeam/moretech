@@ -3,15 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Atm } from './model/atm.model';
 import { AtmServices } from './model/services.model';
-import { LocationSpec, ServiceFilterSpec } from '../../interfaces';
-import { getAtmByLocation, getAtmByLocationWithFilters, getAtmIdsByLocation, getById } from './sql';
+import { LocationSpec, ServiceFilterSpec } from 'src/interfaces';
+import {
+  getAtmByLocation,
+  getAtmByLocationWithFilters,
+  getAtmIdsByLocation,
+  getById,
+} from './sql';
 
 @Injectable()
 export class AtmService {
-
   constructor(
     @InjectRepository(Atm)
-    private atmRepository: Repository<Atm>
+    private atmRepository: Repository<Atm>,
   ) {}
 
   async getAtmByLocation(location: LocationSpec) {
@@ -19,11 +23,26 @@ export class AtmService {
     return data[0].json_agg;
   }
 
-  async getAtmByLocationWithFilters(location: LocationSpec, filters: ServiceFilterSpec) {
-    const filterConditions = this.createFilterCondition(filters);
-    const data =  await this.atmRepository.query(
-      getAtmByLocationWithFilters(location, filterConditions),
-    );
+  async getAtmByLocationWithFilters(
+    location: LocationSpec,
+    filters: ServiceFilterSpec,
+  ) {
+    let bool = false;
+    for (const prop in filters) {
+      if (filters[prop] === true) {
+        bool = true;
+      }
+    }
+
+    if (bool === true) {
+      const filterConditions = this.createFilterCondition(filters);
+      const data = await this.atmRepository.query(
+        getAtmByLocationWithFilters(location, filterConditions),
+      );
+      return data[0].json_agg;
+    }
+
+    const data = await this.atmRepository.query(getAtmByLocation(location));
     return data[0].json_agg;
   }
 
@@ -32,11 +51,10 @@ export class AtmService {
     return data[0].json_agg;
   }
 
-  async getById(id:string) {
+  async getById(id: string) {
     const data = await this.atmRepository.query(getById(id));
     return data[0].json_agg[0];
   }
-
 
   createFilterCondition(filters: ServiceFilterSpec) {
     let data = '';

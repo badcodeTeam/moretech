@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AtmService } from './atm.service';
-import { LocationSpec, ServiceFilterSpec } from '../../interfaces';
+import { LocationSpec, ServiceFilterSpec } from 'src/interfaces';
 
 @Controller(`atm`)
 export class AtmController {
