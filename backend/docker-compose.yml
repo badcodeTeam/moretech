@@ -32,14 +32,6 @@ services:
       - ./data//nest-plain-pg:/var/lib/pgadmin
     networks:
       - app
-  nginx:
-    build:
-      dockerfile: nginx/Dockerfile
-    ports:
-      - "3000:80"
-    networks:
-      - app
-    container_name: router
 
 networks:
   app:
