@@ -12,7 +12,6 @@ export interface LocationSpec {
 
 export interface ServiceFilterSpec {
   wheelchair: boolean;
-  blind: boolean;
   nfcForBankCards: boolean;
   qrRead: boolean;
   supportsUsd: boolean;
