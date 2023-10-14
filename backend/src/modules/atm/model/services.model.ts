@@ -8,7 +8,6 @@ import {
 } from 'typeorm';
 import { ATM_SERVICES_TABLE_NAME } from '../../../constants';
 import { Atm } from './atm.model';
-import { AtmServiceSpec } from '../interfaces';
 
 @Entity(ATM_SERVICES_TABLE_NAME)
 export class AtmServices {

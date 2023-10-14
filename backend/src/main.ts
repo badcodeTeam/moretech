@@ -42,9 +42,11 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('/docs', app, document);
   }
+
   await app.listen(configService.get('config.server.port'), () => {
     console.log(`BASE URL: ${configService.get('config.server.api')}`);
     console.log(`PORT: ${configService.get('config.server.port')}`);
   });
+
 }
 bootstrap();
