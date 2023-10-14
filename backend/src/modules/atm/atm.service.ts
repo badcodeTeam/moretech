@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Atm } from './model/atm.model';
-import { AtmServices } from './model/services.model';
 import { LocationSpec, ServiceFilterSpec } from 'src/interfaces';
 import {
   getAtmByLocation,
