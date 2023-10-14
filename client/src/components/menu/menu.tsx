@@ -1,15 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../input';
 import { MenuWrapper, Toggler, TogglerWrapper } from './menu.styles';
 import { FilterList, PointList } from '..';
+import { SelectMap } from '../select-map';
+import { useDispatch, useSelector } from 'react-redux';
+import { apiSlice, atmFiltersSelector } from '../../store';
+import { AtmFilters } from '../../services/atm-service/atm.interfaces';
+import { updateFilters } from '../../store/atm-filters';
+import { useLazyGetAtmsQuery } from '../../store/api/atm/atm-slice';
 
 export const Menu = (): React.ReactElement => {
 	const [value, setValue] = useState<string>('');
 	const [opened, setOpened] = useState(false);
+	const filters = useSelector(atmFiltersSelector);
 	const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
+	const dispatch = useDispatch();
 	const [selectedPoint, setSelectedPoint] = useState<string>('');
+	//const [trigger] = useLazyGetAtmsQuery();
 
-	const handleItemSelect = (value: string) => {
+	useEffect(() => {
+		const selected: Array<string> = [];
+
+		Object.keys(filters).map((key: string) => {
+			if (filters[key as keyof AtmFilters]) {
+				selected.push(key);
+			}
+		});
+
+		setSelectedItems(selected);
+	}, [filters]);
+
+	const handleItemSelect = async (value: string) => {
+		dispatch(updateFilters(value as keyof AtmFilters));
+		dispatch(apiSlice.util.invalidateTags(['ATMS']));
 		setSelectedItems((prev) => {
 			let temp = [...prev];
 			if (temp.includes(value)) temp = temp.filter((item) => item !== value);
@@ -26,6 +49,7 @@ export const Menu = (): React.ReactElement => {
 			</TogglerWrapper>
 
 			<div className="scrollable">
+				<SelectMap />
 				<div>
 					<Input
 						placeholder="Поиск отделений ВТБ"
@@ -38,12 +62,13 @@ export const Menu = (): React.ReactElement => {
 					selectedItems={selectedItems}
 					onSelectItem={handleItemSelect}
 					filters={[
-						{ id: '1', value: 'text' },
-						{ id: '2', value: 'text' },
-						{ id: '3', value: 'text' },
-						{ id: '4', value: 'text' },
-						{ id: '5', value: 'text' },
-						{ id: '6', value: 'text' },
+						{ id: 'nfcForBankCards', value: 'NFC' },
+						{ id: 'wheelchair', value: 'Для маломобильных' },
+						{ id: 'qrRead', value: 'QR' },
+						{ id: 'supportsUsd', value: 'Доллары' },
+						{ id: 'supportsChargeRub', value: 'Обмен валют' },
+						{ id: 'supportsEur', value: 'Евро' },
+						{ id: 'supportsRub', value: 'Рубли' },
 					]}
 				/>
 				<PointList

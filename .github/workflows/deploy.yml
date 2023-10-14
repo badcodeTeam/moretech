@@ -31,3 +31,6 @@ jobs:
             sudo docker-compose --file docker-compose.yml down;
             sudo docker-compose --file docker-compose.yml up -d;
             sudo docker system prune --all --force;
+            npm run build;
+            pm2 delete backend;
+            pm2 start dist/main.js --name backend;
