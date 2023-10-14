@@ -22,7 +22,7 @@ export class Bank {
   })
   point: Point;
 
-  @Column({ type: 'number', nullable: false, default: 0 })
+  @Column({ type: 'int', nullable: false, default: 0 })
   workload: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
