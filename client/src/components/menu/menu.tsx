@@ -1,13 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../input';
 import { MenuWrapper, Toggler, TogglerWrapper } from './menu.styles';
 import { SelectMap } from '../select-map';
 import { AtmMenu } from './components/atm-menu';
+import { useLocation } from 'react-router-dom';
+import { OfficesMenu } from './components/offices-menu';
 
 export const Menu = (): React.ReactElement => {
 	const [value, setValue] = useState<string>('');
 	const [opened, setOpened] = useState(false);
-	const isAtm = window.location.pathname.split('/')[2] === 'atms';
+	const [isAtm, setIsAtm] = useState(false);
+	const location = useLocation();
+
+	useEffect(() => {
+		setIsAtm(location.pathname.split('/')[2] === 'atms');
+	}, [location]);
 
 	return (
 		<MenuWrapper opened={opened}>
@@ -25,7 +32,7 @@ export const Menu = (): React.ReactElement => {
 						onClear={() => setValue('')}
 					/>
 				</div>
-				{isAtm && <AtmMenu />}
+				{(isAtm && <AtmMenu />) || <OfficesMenu />}
 			</div>
 		</MenuWrapper>
 	);

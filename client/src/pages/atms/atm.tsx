@@ -5,7 +5,7 @@ import currentSelected from '../../assets/currentSelected.svg';
 import userIcon from '../../assets/userIcon.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { atmFiltersSelector, atmSelector, atmsSelector } from '../../store';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AtmService } from '../../services/atm-service/atm-service';
 import { updatePoints } from '../../store/current-atms';
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
@@ -27,36 +27,36 @@ export const Atms = () => {
 			.finally(() => setLoading(false));
 	}, [dispatch, filters]);
 
-	// const getRoute = (ref: Map) => {
-	// 	if (ymaps && atm.needsWay) {
-	// 		const multiRoute = new ymaps.multiRouter.MultiRoute(
-	// 			{
-	// 				// Описание опорных точек мультимаршрута.
-	// 				referencePoints: [
-	// 					[55.802432, 37.704547],
-	// 					[atm.point.coordinates[1], atm.point.coordinates[0]],
-	// 				],
-	// 				// Параметры маршрутизации.
-	// 				params: {
-	// 					// Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
-	// 					results: 2,
-	// 				},
-	// 			},
-	// 			{
-	// 				// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-	// 				boundsAutoApply: true,
-	// 				// Внешний вид линии маршрута.
-	// 				routeActiveStrokeWidth: 6,
-	// 				routeActiveStrokeColor: '#fa6600',
-	// 			}
-	// 		);
+	const getRoute = (ref: Map) => {
+		if (ymaps && atm.needsWay) {
+			const multiRoute = new ymaps.multiRouter.MultiRoute(
+				{
+					// Описание опорных точек мультимаршрута.
+					referencePoints: [
+						[55.802432, 37.704547],
+						[atm.point.coordinates[1], atm.point.coordinates[0]],
+					],
+					// Параметры маршрутизации.
+					params: {
+						// Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+						results: 2,
+					},
+				},
+				{
+					// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+					boundsAutoApply: true,
+					// Внешний вид линии маршрута.
+					routeActiveStrokeWidth: 6,
+					routeActiveStrokeColor: '#fa6600',
+				}
+			);
 
-	// 		// Кладем полученный маршрут в переменную
-	// 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// 		//@ts-ignore
-	// 		ref.geoObjects.add(multiRoute);
-	// 	}
-	// };
+			// Кладем полученный маршрут в переменную
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
+			ref.geoObjects.add(multiRoute);
+		}
+	};
 
 	if (loading) return <>Загрузка</>;
 
@@ -64,10 +64,9 @@ export const Atms = () => {
 		<>
 			<StyledMap
 				defaultState={{ center: [55.802432, 37.704547], zoom: 15 }}
-				//instanceRef={(ref) => ref && getRoute(ref)}
-				//modules={['multiRouter.MultiRoute']}
-				//</>onLoad={(maps) => setYmaps(maps)}
-			>
+				instanceRef={(ref) => ref && getRoute(ref)}
+				modules={['multiRouter.MultiRoute']}
+				onLoad={(maps) => setYmaps(maps)}>
 				<Placemark
 					geometry={[55.802432, 37.704547]}
 					options={{

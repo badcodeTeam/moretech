@@ -38,3 +38,11 @@ export const PointDescription = styled.p`
 	font-weight: 400;
 	line-height: 21.104px;
 `;
+
+export const ActionsWrapper = styled.div`
+	display: flex;
+
+	flex-wrap: wrap;
+
+	gap: 12px;
+`;
