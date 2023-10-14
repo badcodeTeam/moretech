@@ -53,6 +53,8 @@ export const AtmMenu = () => {
 				current,
 				...atms.filter((item) => item.id !== current.id),
 			]);
+		} else {
+			setCurrentArray([...atms]);
 		}
 	}, [current, atms]);
 
