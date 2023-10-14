@@ -7,7 +7,6 @@ import JsonFileAtm from './atms.json';
 import JsonFileBanks from './bank.json';
 import { Bank } from '../bank/model/bank.model';
 import { Workload } from '../bank/model/workload.model';
-import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
 @Controller(`migration`)
 export class MigrationController {
