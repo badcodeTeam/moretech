@@ -1,4 +1,4 @@
-import { LocationSpec } from "../../../interfaces";
+import { LocationSpec } from 'src/interfaces';
 
 export const getAtmByLocation = (location: LocationSpec) => `
 SELECT json_agg(json_build_object(
@@ -12,7 +12,7 @@ FROM
 	public."atm_services_atm_services" as atmserv, 
 	public."AtmServices"  as serv
 WHERE 
-	ST_DWithin(point, 'SRID=4326;POINT(${location.longitude} ${location.latitude})', 10000) 
+	ST_DWithin(point, 'SRID=4326;POINT(${location.longitude} ${location.latitude})', 50000) 
 	AND "atm"."id" = "atmserv"."atmId" 
 	AND "atmserv"."atmServicesId" = "serv"."id"
 `;

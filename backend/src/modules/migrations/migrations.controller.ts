@@ -22,8 +22,7 @@ export class MigrationController {
     @InjectRepository(Bank)
     private bankRepository: Repository<Bank>,
     @InjectRepository(Workload)
-    private workloadRepository: Repository<Workload>,
-    private schedulerRegistry: SchedulerRegistry,
+    private workloadRepository: Repository<Workload>
   ) {}
 
   @Get('/job')
