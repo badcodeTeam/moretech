@@ -98,3 +98,19 @@ export class BankFilterDto {
   })
   filter: BankFiltersDto;
 }
+
+export class getAtmByLocationResponseDto {
+
+}
+
+export class getAtmByLocationWithFilters {
+
+}
+
+export class  getAtmIdsByLocation {
+
+}
+
+export class getById {
+
+}
