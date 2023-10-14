@@ -1,0 +1,33 @@
+name: 'Deploy'
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Run command on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd project/moretech;
+            git checkout main;
+            git pull;
+            cd backend;
+            sudo docker-compose --file docker-compose.yml down;
+            sudo docker-compose --file docker-compose.yml up -d;
+            sudo docker system prune --all --force;
