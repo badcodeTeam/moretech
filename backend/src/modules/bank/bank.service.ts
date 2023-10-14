@@ -3,7 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Bank } from './model/bank.model';
 import { BankFilterSpec, LocationSpec } from 'src/interfaces';
-import { byLoad, byLoadWithFilters, getBankByLocation, getBankIdsByLocation, getBankWithFilters, getById } from './sql';
+import {
+  byLoad,
+  byLoadWithFilters,
+  getBankByLocation,
+  getBankIdsByLocation,
+  getBankWithFilters,
+  getById,
+} from './sql';
 
 @Injectable()
 export class BankService {
@@ -78,4 +85,3 @@ export class BankService {
     return data.slice(0, -4);
   }
 }
-

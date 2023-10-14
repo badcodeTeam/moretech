@@ -1,9 +1,22 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AtmService } from './atm.service';
-import { LocationSpec, ServiceFilterSpec } from 'src/interfaces';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { LocationSpecDto, ServiceFilterDto } from 'src/constants';
+import { LocationSpec } from 'src/interfaces';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  LocationSpecDto,
+  ServiceFilterDto,
+  getFullAtmInfoResponseDto,
+  getShortAtmInfo,
+} from 'src/constants';
 
+@ApiTags(`Банкоматы`)
 @Controller(`atm`)
 export class AtmController {
   constructor(private readonly atmService: AtmService) {}
@@ -12,6 +25,7 @@ export class AtmController {
     summary: `Получить полные данные по банкоматам  по геолокации`,
   })
   @ApiQuery({ type: LocationSpecDto })
+  @ApiResponse({ status: 200, type: [getFullAtmInfoResponseDto] })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/location')
@@ -24,6 +38,7 @@ export class AtmController {
   })
   @ApiQuery({ type: LocationSpecDto })
   @ApiBody({ type: ServiceFilterDto })
+  @ApiResponse({ status: 201, type: [getFullAtmInfoResponseDto] })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Post('/locationfilters')
@@ -38,6 +53,7 @@ export class AtmController {
     summary: `Получить краткие данные по банкоматам по геолокации`,
   })
   @ApiQuery({ type: LocationSpecDto })
+  @ApiResponse({ status: 200, type: [getShortAtmInfo] })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/ids')
@@ -52,6 +68,7 @@ export class AtmController {
     name: 'id',
     required: true,
   })
+  @ApiResponse({ status: 200, type: getFullAtmInfoResponseDto })
   @ApiResponse({ status: 400, description: `BAD_REQUEST` })
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/:id')

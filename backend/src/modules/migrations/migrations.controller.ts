@@ -7,8 +7,9 @@ import JsonFileAtm from './atms.json';
 import JsonFileBanks from './bank.json';
 import { Bank } from '../bank/model/bank.model';
 import { Workload } from '../bank/model/workload.model';
-import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags(`Миграции и тестовые данные`)
 @Controller(`migration`)
 export class MigrationController {
   private JsonAtms = JsonFileAtm;
@@ -33,12 +34,12 @@ export class MigrationController {
   @ApiResponse({ status: 500, description: `INTERNAL_SERVER_ERROR` })
   @Get('/job')
   async handleCronWorkload() {
-    let timerId = setInterval(async () => {
+    setInterval(async () => {
       console.log('handleCronWorkload');
       const ids = await this.workloadRepository.query(
         'select id from public."BankWorkload"',
       );
-      for (let obj of ids) {
+      for (const obj of ids) {
         await this.workloadRepository
           .createQueryBuilder()
           .update()

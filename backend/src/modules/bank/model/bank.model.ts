@@ -54,7 +54,7 @@ export class Bank {
 
   @Column('geography', {
     spatialFeatureType: 'Point',
-    srid: 4326
+    srid: 4326,
   })
   point: Point;
 
