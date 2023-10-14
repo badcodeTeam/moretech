@@ -20,3 +20,12 @@ export interface ServiceFilterSpec {
   supportsEur: boolean;
   supportsRub: boolean;
 }
+
+export interface BankFilterSpec {
+  load: boolean;
+  filter: {
+    rko: boolean;
+    hasRamp: boolean;
+    suoAvailability: boolean;
+  };
+}

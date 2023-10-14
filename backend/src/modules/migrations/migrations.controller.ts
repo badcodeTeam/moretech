@@ -82,6 +82,7 @@ export class MigrationController {
           saturday: Math.floor(Math.random() * 10),
           sunday: Math.floor(Math.random() * 10),
         },
+        load: Math.floor(Math.random() * 10),
       });
       await this.bankRepository.save({
         salePointName: bank.salePointName,

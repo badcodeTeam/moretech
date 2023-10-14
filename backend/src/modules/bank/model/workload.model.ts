@@ -14,4 +14,9 @@ export class Workload {
     type: 'jsonb',
   })
   workload: object;
+
+  @Column({
+    type: 'int', nullable: true
+  })
+  load: number;
 }
