@@ -8,9 +8,7 @@ export const Main = () => {
 	return (
 		<MainWrapper>
 			<Menu />
-			<YMaps
-			//query={{ apikey: '3400eb80-ece5-4bd2-ae42-cd72f7e968d9' }}
-			>
+			<YMaps query={{ apikey: import.meta.env.VITE_API_KEY }}>
 				<MapContainer>
 					<Outlet />
 				</MapContainer>
