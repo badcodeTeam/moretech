@@ -11,7 +11,7 @@ export const PointList: React.FC<PointListProps> = ({
 			{points.map((item) => {
 				return (
 					<Point
-						{...item}
+						item={item}
 						onSelect={onSelect}
 						isSelected={selectedPoint === item.id}
 					/>

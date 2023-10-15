@@ -1,11 +1,8 @@
-interface Point {
-	id: string;
-	title: string;
-	description: string;
-}
+import { AtmPoint } from '../../services/atm-service/atm.interfaces';
+import { Office } from '../../services/office-service/office.interfaces';
 
 export interface PointListProps {
-	points: Array<Point>;
+	points: Array<AtmPoint | Office>;
 	selectedPoint: string;
-	onSelect: (value: string) => void;
+	onSelect: (value: AtmPoint | Office, needsWay?: boolean) => void;
 }

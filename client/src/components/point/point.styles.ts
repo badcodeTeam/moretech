@@ -7,6 +7,8 @@ export const PointWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 
+	gap: 8px;
+
 	:hover {
 		cursor: pointer;
 	}
@@ -35,4 +37,12 @@ export const PointDescription = styled.p`
 	font-style: normal;
 	font-weight: 400;
 	line-height: 21.104px;
+`;
+
+export const ActionsWrapper = styled.div`
+	display: flex;
+
+	flex-wrap: wrap;
+
+	gap: 12px;
 `;

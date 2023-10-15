@@ -5,11 +5,12 @@ export const Button: React.FC<ButtonProps> = ({
 	onlyIcon,
 	icon,
 	text,
+	variant = 'text',
 }) => {
 	return (
-		<ButtonWrapper onClick={onClick}>
-			{!onlyIcon && <>{text}</>}
+		<ButtonWrapper variant={variant} onClick={onClick}>
 			{icon}
+			{!onlyIcon && <>{text}</>}
 		</ButtonWrapper>
 	);
 };

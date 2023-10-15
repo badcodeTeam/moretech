@@ -1,23 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../input';
 import { MenuWrapper, Toggler, TogglerWrapper } from './menu.styles';
-import { FilterList, PointList } from '..';
+import { SelectMap } from '../select-map';
+import { AtmMenu } from './components/atm-menu';
+import { useLocation } from 'react-router-dom';
+import { OfficesMenu } from './components/offices-menu';
 
 export const Menu = (): React.ReactElement => {
 	const [value, setValue] = useState<string>('');
 	const [opened, setOpened] = useState(false);
-	const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
-	const [selectedPoint, setSelectedPoint] = useState<string>('');
+	const [isAtm, setIsAtm] = useState(false);
+	const location = useLocation();
 
-	const handleItemSelect = (value: string) => {
-		setSelectedItems((prev) => {
-			let temp = [...prev];
-			if (temp.includes(value)) temp = temp.filter((item) => item !== value);
-			else temp.push(value);
-
-			return temp;
-		});
-	};
+	useEffect(() => {
+		setIsAtm(location.pathname.split('/')[2] === 'atms');
+	}, [location]);
 
 	return (
 		<MenuWrapper opened={opened}>
@@ -26,6 +23,7 @@ export const Menu = (): React.ReactElement => {
 			</TogglerWrapper>
 
 			<div className="scrollable">
+				<SelectMap />
 				<div>
 					<Input
 						placeholder="Поиск отделений ВТБ"
@@ -34,42 +32,7 @@ export const Menu = (): React.ReactElement => {
 						onClear={() => setValue('')}
 					/>
 				</div>
-				<FilterList
-					selectedItems={selectedItems}
-					onSelectItem={handleItemSelect}
-					filters={[
-						{ id: '1', value: 'text' },
-						{ id: '2', value: 'text' },
-						{ id: '3', value: 'text' },
-						{ id: '4', value: 'text' },
-						{ id: '5', value: 'text' },
-						{ id: '6', value: 'text' },
-					]}
-				/>
-				<PointList
-					selectedPoint={selectedPoint}
-					points={[
-						{
-							id: '1',
-							title: '1-я Кунцевская наб., 13к2',
-							description:
-								'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
-						},
-						{
-							id: '2',
-							title: '2-я Кунцевская наб., 13к2',
-							description:
-								'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
-						},
-						{
-							id: '3',
-							title: '2-я Кунцевская наб., 13к2',
-							description:
-								'Юридические услуги, выдача банковских карт, обсдуживание ипотечных кредитов, банкомат, касса',
-						},
-					]}
-					onSelect={setSelectedPoint}
-				/>
+				{(isAtm && <AtmMenu />) || <OfficesMenu />}
 			</div>
 		</MenuWrapper>
 	);
