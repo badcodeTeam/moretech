@@ -6,7 +6,7 @@ export class OfficeService {
 
 	static async getOffices(args: GetOfficeProps): Promise<OfficeResponse> {
 		const { data } = await network.post<OfficeResponse>(
-			`${this.url}/locationfilters?longitude=37.704547&latitude=55.802432`,
+			`${this.url}/locationfilters?longitude=${args.cords.longitude}&latitude=${args.cords.latitude}`,
 			{
 				...args.filters,
 			}

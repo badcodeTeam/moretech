@@ -33,7 +33,7 @@ export const Offices = () => {
 	useEffect(() => {
 		setLoading(true);
 		OfficeService.getOffices({
-			cords: { latitude: 0, longitude: 0 },
+			cords: { latitude, longitude },
 			filters: {
 				load: filters.load,
 				filter: {
@@ -45,7 +45,7 @@ export const Offices = () => {
 		})
 			.then((res) => dispatch(updateOffices(res)))
 			.finally(() => setLoading(false));
-	}, [dispatch, filters]);
+	}, [dispatch, filters, latitude, longitude]);
 
 	const getRoute = (ref: Map) => {
 		if (ymaps && office.needsWay) {

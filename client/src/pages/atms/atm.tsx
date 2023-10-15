@@ -26,10 +26,10 @@ export const Atms = () => {
 
 	useEffect(() => {
 		setLoading(true);
-		AtmService.getAtms({ cords: { latitude: 0, longitude: 0 }, filters })
+		AtmService.getAtms({ cords: { latitude, longitude }, filters })
 			.then((res) => dispatch(updatePoints(res)))
 			.finally(() => setLoading(false));
-	}, [dispatch, filters]);
+	}, [dispatch, filters, latitude, longitude]);
 
 	const getRoute = (ref: Map) => {
 		if (ymaps && atm.needsWay) {
