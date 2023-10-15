@@ -1,5 +1,6 @@
 import {
 	ActionsWrapper,
+	PointDescription,
 	PointHeader,
 	PointHeaderWrapper,
 	PointProps,
@@ -13,6 +14,7 @@ import { Button } from '..';
 import { isOffice } from '../../utils/typeguards';
 import { TAXI_URL } from '../../globals';
 import { usePosition } from '../../hooks';
+import { Chart } from '../chart';
 
 export const Point: React.FC<PointProps> = ({ item, onSelect, isSelected }) => {
 	const position = usePosition();
@@ -68,6 +70,38 @@ export const Point: React.FC<PointProps> = ({ item, onSelect, isSelected }) => {
 					/>
 				)}
 			</PointHeaderWrapper>
+			{isSelected && isOffice(item) && (
+				<>
+					<ActionsWrapper>
+						<PointDescription>Для ЮЛ:</PointDescription>
+						<br />
+						{item.openHours.map((element) => {
+							return (
+								<PointDescription>
+									{element.days}: {element.hours}
+								</PointDescription>
+							);
+						})}
+					</ActionsWrapper>
+					<ActionsWrapper>
+						<PointDescription>Для ФЛ:</PointDescription>
+						<br />
+						{item.openHoursIndividual.map((element) => {
+							return (
+								<PointDescription>
+									{element.days !== 'Не обслуживает ЮЛ' && (
+										<>
+											{element.days}: {element.hours}
+										</>
+									)}
+								</PointDescription>
+							);
+						})}
+					</ActionsWrapper>
+
+					<Chart workloads={item.workloads} />
+				</>
+			)}
 			{isSelected && (
 				<ActionsWrapper>
 					<Button

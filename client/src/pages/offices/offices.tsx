@@ -14,7 +14,12 @@ import { Clusterer, Placemark } from '@pbe/react-yandex-maps';
 import okIcon from '../../assets/ok.svg';
 import currentSelected from '../../assets/currentSelected.svg';
 import userIcon from '../../assets/userIcon.svg';
+import currentFull from '../../assets/currentFull.svg';
+import currentHalf from '../../assets/currentHalf.svg';
+import half from '../../assets/half.svg';
+import full from '../../assets/full.svg';
 import { Map } from 'yandex-maps';
+import { usePosition } from '../../hooks';
 
 export const Offices = () => {
 	const filters = useSelector(officeFiltersSelector);
@@ -23,6 +28,7 @@ export const Offices = () => {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 	const [ymaps, setYmaps] = useState<YMapsApi | null>(null);
+	const { longitude, latitude } = usePosition();
 
 	useEffect(() => {
 		setLoading(true);
@@ -47,7 +53,7 @@ export const Offices = () => {
 				{
 					// Описание опорных точек мультимаршрута.
 					referencePoints: [
-						[55.802432, 37.704547],
+						[latitude, longitude],
 						[office.point.coordinates[1], office.point.coordinates[0]],
 					],
 					// Параметры маршрутизации.
@@ -77,12 +83,12 @@ export const Offices = () => {
 	return (
 		<>
 			<StyledMap
-				defaultState={{ center: [55.802432, 37.704547], zoom: 15 }}
+				defaultState={{ center: [latitude, longitude], zoom: 15 }}
 				instanceRef={(ref) => ref && getRoute(ref)}
 				modules={['multiRouter.MultiRoute']}
 				onLoad={(maps) => setYmaps(maps)}>
 				<Placemark
-					geometry={[55.802432, 37.704547]}
+					geometry={[latitude, longitude]}
 					options={{
 						iconLayout: 'default#image',
 						iconImageHref: userIcon,
@@ -92,6 +98,14 @@ export const Offices = () => {
 				<Clusterer options={{ groupByCoordinates: false }}>
 					{offices &&
 						offices?.map((item) => {
+							const currentIcon =
+								(item.load < 5 && currentSelected) ||
+								(item.load < 10 && currentHalf) ||
+								currentFull;
+
+							const icon =
+								(item.load < 5 && okIcon) || (item.load < 10 && half) || full;
+
 							return (
 								<Placemark
 									key={item.id}
@@ -102,7 +116,7 @@ export const Offices = () => {
 									options={{
 										iconLayout: 'default#image',
 										iconImageHref:
-											(office.id === item.id && currentSelected) || okIcon,
+											(office.id === item.id && currentIcon) || icon,
 										iconImageSize: [42, 42],
 									}}
 									onClick={() =>

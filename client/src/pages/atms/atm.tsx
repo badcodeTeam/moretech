@@ -3,6 +3,8 @@ import { StyledMap } from '../main/main.styles';
 import okIcon from '../../assets/ok.svg';
 import currentSelected from '../../assets/currentSelected.svg';
 import userIcon from '../../assets/userIcon.svg';
+import ghost from '../../assets/ghost.svg';
+import face from '../../assets/face-in-clouds.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { atmFiltersSelector, atmSelector, atmsSelector } from '../../store';
 import { useEffect, useState } from 'react';
@@ -11,6 +13,7 @@ import { updatePoints } from '../../store/current-atms';
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing';
 import { Map } from 'yandex-maps';
 import { updatePoint } from '../../store/current-point';
+import { usePosition } from '../../hooks';
 
 export const Atms = () => {
 	const filters = useSelector(atmFiltersSelector);
@@ -19,6 +22,7 @@ export const Atms = () => {
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 	const [ymaps, setYmaps] = useState<YMapsApi | null>(null);
+	const { longitude, latitude } = usePosition();
 
 	useEffect(() => {
 		setLoading(true);
@@ -33,7 +37,7 @@ export const Atms = () => {
 				{
 					// Описание опорных точек мультимаршрута.
 					referencePoints: [
-						[55.802432, 37.704547],
+						[latitude, longitude],
 						[atm.point.coordinates[1], atm.point.coordinates[0]],
 					],
 					// Параметры маршрутизации.
@@ -63,21 +67,43 @@ export const Atms = () => {
 	return (
 		<>
 			<StyledMap
-				defaultState={{ center: [55.802432, 37.704547], zoom: 15 }}
+				defaultState={{ center: [latitude, longitude], zoom: 15 }}
 				instanceRef={(ref) => ref && getRoute(ref)}
 				modules={['multiRouter.MultiRoute']}
 				onLoad={(maps) => setYmaps(maps)}>
 				<Placemark
-					geometry={[55.802432, 37.704547]}
+					geometry={[latitude, longitude]}
 					options={{
 						iconLayout: 'default#image',
 						iconImageHref: userIcon,
 						iconImageSize: [42, 42],
 					}}
 				/>
+				<Placemark
+					geometry={[55.751962, 37.629489]}
+					options={{
+						iconLayout: 'default#image',
+						iconImageHref: ghost,
+						iconImageSize: [42, 42],
+					}}
+					onClick={() =>
+						window.open(
+							'https://www.vtb.ru/personal/karty/kreditnye/vozmozhnosti/'
+						)
+					}
+				/>
+				<Placemark
+					geometry={[55.770496, 37.608176]}
+					options={{
+						iconLayout: 'default#image',
+						iconImageHref: face,
+						iconImageSize: [42, 42],
+					}}
+					onClick={() => window.open('https://www.vtb.ru/promo/pens-vklad/')}
+				/>
 				<Clusterer options={{ groupByCoordinates: false }}>
 					{atms &&
-						atms?.map((item) => {
+						atms.map((item) => {
 							return (
 								<Placemark
 									key={item.id}

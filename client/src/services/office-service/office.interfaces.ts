@@ -20,6 +20,7 @@ export interface Office {
 	kep: boolean;
 	myBranch: boolean;
 	openHours: Array<OpenDays>;
+	openHoursIndividual: Array<OpenDays>;
 	workloads: Record<string, number>;
 	load: number;
 }

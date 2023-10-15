@@ -17,6 +17,7 @@ const initialState: Office & { needsWay: boolean } = {
 	kep: false,
 	myBranch: false,
 	openHours: [],
+	openHoursIndividual: [],
 	workloads: {
 		monday: 0,
 	},

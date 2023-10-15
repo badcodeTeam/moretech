@@ -8,6 +8,7 @@ import {
 import { atmFiltersSelector, atmSelector, atmsSelector } from '../../../store';
 import { updateFilters } from '../../../store/atm-filters';
 import { updatePoint } from '../../../store/current-point';
+import { isOffice } from '../../../utils/typeguards';
 
 export const AtmMenu = () => {
 	const [selectedItems, setSelectedItems] = useState<Array<string>>([]);
@@ -77,8 +78,10 @@ export const AtmMenu = () => {
 				selectedPoint={selectedPoint}
 				points={currentArray}
 				onSelect={(value, needsWay) => {
-					handlePointSelect(value, needsWay);
-					setSelectedPoint(value.id);
+					if (!isOffice(value)) {
+						handlePointSelect(value, needsWay);
+						setSelectedPoint(value.id);
+					}
 				}}
 			/>
 		</>
