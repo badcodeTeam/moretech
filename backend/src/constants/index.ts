@@ -307,13 +307,13 @@ export class getShortBankInfo {
   rko: Rko;
 
   @ApiProperty({
-    example: openHoursService,
+    example: [openHoursService],
     description: `График обслуживания юридических лиц`,
   })
   openHours: openHoursService[];
 
   @ApiProperty({
-    example: openHoursIndividualService,
+    example: [openHoursIndividualService],
     description: `График обслуживания физических лиц`,
   })
   openHoursIndividual: openHoursIndividualService[];
@@ -459,13 +459,13 @@ export class getFullBankInfoResponseDto {
   myBranch: boolean;
 
   @ApiProperty({
-    example: openHoursService,
+    example: [openHoursService],
     description: `График обслуживания юридических лиц`,
   })
   openHours: openHoursService[];
 
   @ApiProperty({
-    example: openHoursIndividualService,
+    example: [openHoursIndividualService],
     description: `График обслуживания физических лиц`,
   })
   openHoursIndividual: openHoursIndividualService[];
