@@ -48,7 +48,7 @@ export const AtmMenu = () => {
 	};
 
 	useEffect(() => {
-		if (current.id !== '') {
+		if (current.id !== '' && atms) {
 			setSelectedPoint(current.id);
 			setCurrentArray([
 				current,

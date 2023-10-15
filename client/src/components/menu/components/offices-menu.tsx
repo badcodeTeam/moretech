@@ -48,7 +48,7 @@ export const OfficesMenu = () => {
 	};
 
 	useEffect(() => {
-		if (current.id !== '') {
+		if (current.id !== '' && offices) {
 			setSelectedPoint(current.id);
 			setCurrentArray([
 				current,
